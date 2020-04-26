@@ -1,0 +1,882 @@
+
+.container{
+  h1{
+       font-size: 25px;
+       color:#E45456;
+ }
+  p{
+       font-size: 25px;
+       color:#3C7949;
+  }
+
+ .myclass{
+  h1{
+        font-size: 25px;
+        color:#E45456;
+  }
+  p{
+       font-size: 25px;
+       color:@color1+@color2;
+  }
+ }
+}
+
+/* 变量 */
+@color1:#3C7949;
+@color2:#64321E;
+
+/* Mixins语言特性 */
+.a{
+  color: red;
+}
+
+.b{
+  .a();
+}
+
+/* 函数 */
+@color3: #FF8000;
+@width:1.0;
+.mycolor{
+color: @color3;
+ width: percentage(@width);
+}
+
+/* 命名空间及访问器 */
+
+.class1 {
+  .class2 {
+    .liu(@param) {
+      font-size: @param;
+      color:green;
+    }
+  }
+}
+.myclass {
+  .class1 > .class2 > .liu(20px);
+}
+//--------------------------------
+.jun(@font-size,@color){
+  font-size: @font-size;
+  color:@color;
+}
+.myname{
+  .jun(18px,red);
+}
+
+
+/* Less 变量范围 */
+@var: @a;
+@a: 15px;
+.myclass {
+  font-size: @var;
+  @a:20px;
+  color: green;
+}
+
+/* Less 选择器变量 */
+@nav:p div;
+@{nav} {
+  background: #2ECCFA;
+}
+//----------------
+@mySelector: #wrap;
+@Wrap: wrap;
+@{mySelector}{ //变量名 必须使用大括号包裹
+  color: #999;
+  width: 50%;
+}
+.@{Wrap}{
+  color:#ccc;
+}
+#@{Wrap}{
+  color:#666;
+}
+/* Less 属性变量 */
+@borderStyle: border-style;
+@Soild:solid;
+#wrap{
+  @{borderStyle}: @Soild;//变量名 必须使用大括号包裹
+}
+//---------------------------------
+@my-property: color;
+.myclass {
+  background-@{my-property}: #81F7D8;
+}
+/*Less url变量*/
+@images: "../img";//需要加引号
+body {
+  background: url("@{images}/dog.png");//变量名 必须使用大括号包裹
+}
+
+/*Less 声明变量
+  有点类似于 下面的 混合方法
+  结构: @name: { 属性: 值 ;};
+  使用：@name();
+*/
+@background: {background:red;};
+#main{
+    @background();
+}
+@Rules:{
+    width: 200px;
+    height: 200px;
+    border: solid 1px red;
+};
+#con{
+  @Rules();
+}
+//Less 变量作用域
+@var: @a;
+@a: 100%;
+#wrap {
+  width: @var;
+  @a: 9%;
+}
+
+//用变量去定义变量
+@fnord:  "I am fnord.";
+@var:    "fnord";
+#wrap::after{
+  content: @@var; //将@var替换为其值 content:@fnord;
+}
+
+/*嵌套
+  1、& 的妙用      & ：代表的上一层选择器的名字，此例便是header。
+*/
+#header{
+  &:after{
+    content:"Less is more!";
+  }
+  .title{
+    font-weight:bold;
+  }
+  &_content{//理解方式：直接把 & 替换成 #header
+    margin:20px;
+  }
+}
+
+/*Less Import语句
+  import语句可以具有保存路径的变量。当你引用一个普通的父目录时，这是非常有用的。
+*/
+@path : "//webpack-demo.com:8080/web/css";
+@import "@{path}/index.css";
+.myclass{
+ color : #A52A2A;
+}
+/*Less 变量延迟加载
+在延迟加载中，即使它们尚未声明，也可以使用变量。
+*/
+p {
+  font-size: @a;
+  color: #ca428b;
+}
+@a: @b;
+@b: 25px;
+
+/*=====================================Less 扩展==================================
+  Extend是一个LESS伪类，它通过使用:extend 选择器在一个选择器中扩展其他选择器样式。
+==================================================================================*/
+h2 {
+  &:extend(.style);
+  font-style: italic;
+}
+.style {
+  background: green;
+}
+//----------------------
+.style:extend(.container, .img)
+{
+  background: #BF70A5;
+}
+.container {
+  font-style: italic;
+}
+.img{
+   font-size: 30px;
+ }
+/*1、LESS 扩展附加到选择器
+  扩展连接到一个选择器，它看起来类似于具有选择器作为参数的伪类。 当规则集具有许多选择器时，
+  则关键字扩展可以应用于任何选择器。 以下是用于定义代码中 extend 的格式。
+  ● 在选择器之后扩展。 [例如： pre：hover：extend（div pre）]
+  ● 允许选择器和扩展之间的空格[例如： pre：hover：extend（div pre）]
+  ● 允许多个扩展[例如： pre：hover：extend（div pre）：extend（.bucket tr）或 pre：hover：extend（div pre，.bucket tr） ]
+  ● 扩展必须在选择器的末尾定义。 pre：hover：extend（div pre）.nth-child（odd）类型不允许。
+*/
+.style1,
+.container1:extend(.img1){
+   background: #BF70A5;
+}
+.img1{
+   font-size: 45px;
+   font-style: italic;
+}
+/*2、LESS 扩展内部规则集
+  &:extend(selector) 语法可以放在规则集的正文中。 它是放置扩展到规则集的每个选择器的快捷方式。
+*/
+.container2,
+.style2 {
+     &:extend(.img2);
+}
+.img2{
+    font-style: italic;
+    background-color: #7B68EE;
+ }
+ /*3、LESS 扩展嵌套选择器
+  使用 extend 选择器匹配嵌套选择器。
+*/
+.style3 {
+  h3{
+  color: #BF70A5;
+  font-size: 30px;
+}
+}
+.img3:extend(.style3 h3){}
+/*4、LESS 完全匹配与扩展
+  默认情况下， extend 查找选择器之间的完全匹配。 对于具有相同含义的两个第n个表达式，扩展无关紧要，
+  但它只寻找与为选择器匹配定义的相同的顺序形式。
+*/
+.style4 h3,
+h3.style4{
+  color: #BF70A5;
+  font-style: italic;
+}
+.img4:extend(.style4 h3){}
+/*5、LESS-nth表达式
+  nth表达式的形式在扩展中很重要，否则它将选择器视为不同。 nth表达式1n + 2和n + 2是等效的，但扩展将该表达式视为不同。
+*/
+:nth-child(n+2)
+{
+color: #BF70A5;
+  font-style: italic;
+}
+.child:extend(:nth-child(n+2)){}
+//--------------------------------------
+[title=tutorialspoint] {   //不带引号
+  font-style: italic;
+}
+[title='tutorialspoint'] {  //单引号
+ font-style: italic;
+}
+[title="tutorialspoint"] {  //双引号
+  font-style: italic;
+}
+.style5:extend([title=tutorialspoint]) {}
+.container5:extend([title='tutorialspoint']) {}
+.img5:extend([title="tutorialspoint"]) {}
+/*6、LESS 扩展“all”
+当最后在扩展参数中标识关键字 all 时，LESS将该选择器作为另一个选择器的一部分。 匹配的选择器部分将被extend替换，形成一个新的选择器。
+*/
+.style6.nav,
+.nav h3 {
+  color: orange;
+}
+.nav {
+  &:hover {
+    color: green;
+  }
+}
+.container6:extend(.nav all) {}
+/*7、LESS 选择器插值(变量)扩展
+  @{variable} 符号用作变量名，id和类名的一部分（即定义选择器变量）。 扩展不具有使选择器与变量匹配的能力。 扩展可以连接到内插选择器。
+*/
+.style7 {
+  color: #BF70A5;
+  font-style: italic;
+}
+@{my-selector}{
+  &:extend(.style7);
+}
+@my-selector: .selector;
+/*8、LESS @media内部作用域/扩展
+  在媒体声明中，应写入extend。 该扩展匹配仅在同一媒体声明内存在的选择器。 在媒体声明中存在的扩展与嵌套声明中存在的选择器不匹配。
+*/
+@media screen {
+  .style8 {
+    width:500px;
+  }
+  @media (min-width: 1023px) {
+    .style8 {
+      width:500px;
+    }
+  }
+}
+.cont:extend(.style8) {}
+/*9、LESS 重复检测。 它不能检测选择器的重复。*/
+.cont-main,
+.style10 {
+  font-family: "Comic Sans MS";
+  font-size: 30px;
+}
+.cont-main{
+  font-size: 30px;
+}
+.cont2:extend(.cont-main, .style10) {}
+
+
+/*==================================Less 混合=======================================================
+混合类似于编程语言中的函数。 Mixins是一组CSS属性，允许您将一个类的属性用于另一个类，并且包含类名作为其属性。 
+在LESS中，可以使用类或id选择器以与CSS样式相同的方式声明mixin。
+它可以存储多个值，并且可以在必要时在代码中重复使用。
+====================================================================================================*/
+
+/*1、LESS 不输出Mixin， 可以创建一个mixin，它可以通过简单地放置括号后在输出中消失。*/
+.a(){
+  padding-left: 100px;
+}
+.myclass{
+  background : #64d9c0;
+  .a;
+}
+/*2、LESS Mixins中的选择器。mixins不仅可以包含属性，还可以包含选择器。*/
+.mixin() {
+  &:hover {
+    background: #FFC0CB;
+  }
+}
+a {
+  .mixin();
+}
+/*3、LESS Mixin命名空间。命名空间用于在通用名称下对mixin进行分组。 
+  使用命名空间可以避免名称冲突，并从外部封装mixin组。
+*/
+#outer() {
+  background:yellow;
+  .inner {
+    color: red;
+  }
+}
+p {
+  #outer > .inner;
+}
+
+/*4、LESS 保护的命名空间。当guard应用于命名空间时，只有在guard条件返回true时才使用由命名空间定义的mixin。 
+命名空间防护类似于mixins上的guard。
+*/
+@color : blue;
+#namespace when (@color = blue) {
+  .mixin() {
+   color: red;
+  }
+}
+p{
+ #namespace .mixin();
+}
+/*5、LESS !important 关键字
+！important 关键字用于覆盖特定属性。 当它在mixin调用之后放置时，它会将所有继承的属性标记为！important 。
+*/
+.mixin5(){
+  color: #900;
+  background: #F7BE81;
+}
+.para1{
+  .mixin5();
+}
+.para2{
+  .mixin5() !important;
+}
+
+
+/*====================================Less 混合参数==============================================
+  参数mixin使用一个或多个参数，通过参数和其属性来扩展LESS的功能，以便在混合到另一个块时自定义mixin输出。
+*================================================================================================/
+.border(@width; @style; @color) {
+    border: @width @style @color;
+}
+.myheader {
+    .border(2px; dashed; green);
+}
+/*1、LESS Mixins具有多个参数。
+  参数可以使用逗号或分号分隔。 使用逗号符号，可以将其解释为mixin参数分隔符或css列表分隔符。 如果在mixin中使用分号，那么它将用分号分隔参数，CSS列表将包含所有逗号。
+  它包括一些关于分号和逗号的点，如下所示：
+  如果你有两个参数，那么它们将包含逗号分隔的列表。 例如 .class1(1，2，3; sometext，other thing)。
+  如果有三个参数，并且只包含数字，例如 .class1(1，2，3)。
+  您可以使用带有逗号分隔列表的虚拟分号，例如 .class1(1，2，3;)。
+  有逗号分隔的默认值。 例如 .class1(@color：gray，green;)
+*/
+.mixin(@color) {
+  color: @color;
+}
+.mixin(@color; @padding: 2) {
+  color: @color;
+  padding: @padding;
+}
+
+.myclass {
+  .mixin(#FE9A2E);
+}
+
+/*2、LESS 命名参数
+Mixins通过使用它们的名称提供参数值而不是位置。 参数没有放置值的任何顺序，它们可以通过名称引用。 
+命名参数的结果更容易阅读，并提供清晰的代码。
+*/
+.mixin6(@color: black; @fontSize: 10px) {
+  color: @color;
+  font-size: @fontSize;
+}
+.class1 {
+  .mixin6(@fontSize: 20px; @color: #F5A9D0);
+}
+.class2 {
+  .mixin6(#F79F81; @fontSize: 20px);
+}
+
+/*3、LESS @arguments 变量
+当调用mixin时， @arguments 包括所有传递的参数。 当不想使用单个参数时， @arguments 变量很有用。
+*/
+.box-shadow(@x: 0; @y: 0; @height: 3px; @width: 3px) {
+  -webkit-box-shadow: @arguments;
+     -moz-box-shadow: @arguments;
+          box-shadow: @arguments;
+}
+.myclass {
+  .box-shadow(2px; 2px);
+}
+
+/*4、LESS 高级参数和@rest Variable
+Mixin通过使用 ... 提供可变数量的参数。 您可以通过在变量名称后面放置 ... 为变量赋值参数。
+让我们看看一些使用参数的简单格式如下所示：
+.mixin(...) {        // it matches arguments from 0-n
+.mixin() {           // it matches exactly 0 arguments
+.mixin(@x: 1) {      // it matches arguments from 0-1
+.mixin(@x: 1; ...) { // it matches arguments from 0-n
+.mixin(@x; ...) {
+*/
+.mixin7(@listofvariables...) {
+  border: @listofvariables;
+}
+p {
+  .mixin7(1px; solid; red);
+}
+//-----------------------------
+.mixin8(@color,@rest...) {   //@rest绑定除@color参数的所有参数
+  color: @color; 
+  padding: @rest;
+}
+div {
+.mixin8(red; 10px; 20px; 5px; 5px);
+}
+
+/*5、LESS 模式匹配。您可以通过向其传递参数来更改mixin的行为。*/
+.mixin9(dark; @color) {
+  color: darken(@color, 15%);
+}
+.mixin9(light; @color) {
+  color: lighten(@color, 15%);
+}
+
+@color-new: dark;
+
+.myclass {
+  .mixin9(@color-new; #FF0000);
+}
+
+/*=================================Less Mixins函数==========================================
+和混合和函数的工作方式非常相似的函数，mixins可以嵌套，可以接受参数和返回值。
+============================================================================================*/
+
+/*1、LESS Mixin范围
+  由变量和混合组成的混合可以在调用者的作用域中使用，并且是可见的。 但是有一个例外，如果调用者包含具有相同名称的变量，
+  那么该变量不会复制到调用者的作用域中。 只有调用者范围内的变量被保护，并且继承的变量将被覆盖。
+*/
+.mixin10() {
+  @bgcolor: #C0C0C0;
+}
+.myclass{
+  .mixin10();
+  background-color: @bgcolor;
+}
+
+/*2、LESS Mixin和返回值
+mixin类似于函数，在mixin中定义的变量将作为它的返回值。
+*/
+.padding(@x, @y) {
+  @padding: ((@x + @y) / 2);
+}
+.myclass{
+  .padding(80px, 120px);  // call to the mixin
+  padding-left: @padding; //  returns the value
+}
+
+/*3、LESS mixin定义在另一个mixin
+每当一个mixin定义在另一个mixin中时，它也可以用作返回值。
+*/
+.outerMixin(@value) {
+  .nestedMixin() {
+    font-size: @value;
+  }
+}
+.myclass {
+  .outerMixin(30);
+  .nestedMixin();
+}
+
+/*=================================Less 将规则集传递给Mixins+================================
+分离的规则集包含一个普通的规则集，如属性，嵌套规则集，变量声明，mixins等。它存储在一个变量中，
+并包含到其他结构中，其中规则集的所有属性都将被复制到该结构。
+  分离的规则集中的所有变量和混合宏在被调用或定义的地方都可用，否则调用者和定义范围都可用。 
+当两个范围包含相同的mixin或variable时，声明范围获取优先级。 分离的规则集体在声明范围中定义。 
+在将分离的规则集从一个变量复制到另一个变量后，它不会更改其范围。
+============================================================================================*/
+@detached-ruleset: {
+    .mixin() {
+        font-family: "Comic Sans MS";
+        background-color: #AA86EE;
+    }
+};
+.cont {
+    @detached-ruleset();
+    .mixin();
+}
+
+/*1、LESS 定义和调用范围可见性
+  变量和mixin在分离的规则集中定义。
+*/
+@detached-ruleset2: {    //定义规则集
+  background-color: @caller-variable;
+  .caller-mixin(){
+    font-style:italic;
+  };
+};
+.cont1 {
+  @detached-ruleset2();
+  @caller-variable: #AA86EE;
+  .caller-mixin();
+}
+
+/*2、LESS 解锁将修改分离Ruleset Scope
+  分离的规则集可以通过导入到范围中来访问。
+*/
+#id {
+  .style() {
+    @detached: { font-style: @font; };  //定义规则集
+  }
+}
+.container11() {
+  @font: italic;
+  #id > .style();
+}
+.cont {
+  .container11();
+   @detached();
+}
+
+/*=================================Less 导入指令与导入选项=========================================
+Less 中，可以通过 @import 指令来导入外部文件。 
+@import 伪指令用于在代码中导入文件。 它将LESS代码分布在不同的文件上，并允许轻松地维护代码的结构。 
+您可以将 @import 语句放在代码中的任何位置。
+例如，您可以使用 @import 关键字作为 @import“file_name.less"导入文件。
+文件扩展名
+您可以使用 @import 语句，具体取决于不同的文件扩展名，例如:
+如果您使用 .css 扩展名，那么它将被视为CSS和 @import 语句保持不变。
+如果它包含任何其他扩展名，那么它将被视为LESS并将被导入。
+如果没有较少的扩展，那么它将被附加并包含为导入的较少文件。
+@import "style";      // imports the style.less
+@import "style.less"; // imports the style.less
+@import "style.php";  // imports the style.php as a less file
+@import "style.css";  // it will kept the statement as it is
+============================================================================================*/
+/*1、LESS 导入：reference选项关键字
+  @import(reference)用于导入外部文件，但不会将导入的样式添加到编译的CSS文件中。 这是在版本1.5.0 中发布的。
+*/
+@import (reference) "./reference.less";
+p {
+    .style11;
+}
+/*2、LESS 导入：inline选项关键字
+@import(inline)会将CSS复制到输出CSS文件中，而不进行处理。 当CSS文件不是LESS兼容时，这是有用的。 
+虽然LESS支持大多数标准CSS，但在某些地方不支持注释，并且不修改CSS，它不会支持所有已知的CSS黑客。 
+即使 @import(inline)不会处理CSS，它将确保所有的CSS将在一个文件中。 这是在版本1.5.0 中发布的。
+*/
+@import (inline) "./inline.css";
+p {
+  color:red;
+}
+/*3、LESS 导入：Less选项关键字
+  @import(less)会将文件导入为LESS文件，而不管文件扩展名是什么。 这是在版本1.4.0 中发布的。
+*/
+@import (less) "./less.txt";
+.para_1 {
+    color: red;
+    .style13;
+}
+.para_2 {
+    color: blue;
+}
+/*4、LESS 导入：CSS选项关键字
+  @import(css)会将文件导入为常规CSS，而不管文件扩展名。 这是在版本1.4.0 中发布的。
+*/
+@import  "./css.txt";    //达到想要效果。如添加css关键字则报错？？？？
+.para_3 {
+    color: green;
+    .my_css;
+}
+.para_4 {
+    color: blue;
+}
+/*5、LESS 导入：once选项关键字
+@import(once)确保文件只导入一次，并且对该文件将忽略任何以下import语句。 
+这是 @import statments的默认行为。 这是在版本1.4.0 中发布的。
+*/
+@import (once) "./once.less";
+@import (once) "./once.less"; // 此语句将被忽略
+.para_5 {
+    color: red;
+    .style14;
+}
+.para_6 {
+    color: blue;
+} 
+
+/*6、LESS 导入：multiple选项关键字
+通过 @import(multiple)，您可以导入具有相同名称的多个文件。 这与一次完全相反。 这是在版本1.4.0 中发布的。
+*/
+@import (multiple) "./multiple.less";
+@import (multiple) "./multiple.less";
+.para_1 {
+    color: red;
+}
+.para_2 {
+    color: blue;
+} 
+/*7、LESS 导入：optional选项关键字
+optional允许您在文件不存在时导入文件。 如果要导入的文件不存在并且未使用可选关键字optional，
+则LESS会抛出 FileError 错误并停止编译。 这是在版本2.3.0 中发布的。
+*/
+@import (optional) "fileNotExist.css";
+p{
+  color: red;
+}
+
+/*================================Less Mixin Guards==============================
+如果你想在表达式上匹配简单的值或参数数量，那么你可以使用Guards。 
+它与mixin声明相关联，并包括附加到mixin的条件。 每个mixin将有一个或多个由逗号分隔的防护，
+并且guard必须括在括号中。 LESS使用Guards的mixins而不是if / else语句，并执行计算以指定匹配的mixin。
+*/
+.mixinlg (@a) when (lightness(@a) >= 50%) {
+   font-size: 14px;
+}
+.mixinlg (@a) when (lightness(@a) < 50%) {
+   font-size: 16px;
+}
+.mixinlg (@a) {
+   color: @a;
+}
+.class1 {
+   .mixinlg(#FF0000)
+}
+.class2 {
+   .mixinlg(#555)
+}
+/*1、LESS Guard比较运算符
+  LESS包含五个保护比较运算符：<，>，<=，> =和=。 
+  您可以使用比较运算符（=）来比较数字，字符串，标识符等，而剩余的运算符只能与数字一起使用。
+*/
+.mixinGs (@a) when (@a = 20px){ color:red;}
+.mixinGs (@a) when (@a < 20px){color:blue;}
+.mixinGS (@a) {  font-size: @a;}
+.myclass3 { .mixin(20px) }
+/*2、LESS Guard逻辑运算符
+  您可以使用关键字来解决Guard逻辑运算符。 您可以使用and关键字组合使用Guard条件，并使用not关键字取消条件。
+*/
+.mixinL (@a) when (@a > 50%) and (@a > 5px){
+font-size: 14px;
+}
+.mixinL (@a) when not (@a < 50%) and not (@a < 5px){
+font-size: 20px;
+}
+.mixinL (@a) {
+  color: @a;
+}
+.class1 { .mixinL(#FF0000) }
+.class2 { .mixinL(#555) }
+/*3、LESS 类型检查函数
+您可以使用类型检查内置函数来确定匹配混合宏的值类型。 为此，您可以使用 is 函数。 以下是可用功能的列表：
+● iscolor       判断一个值是否是颜色
+● isnumber      判断一个值是否是数字（可含单位）
+● isstring      判断一个值是否是字符串
+● iskeyword     判断一个值是否是关键字
+● isurl         判断一个值是否是url
+这些都是基本的类型检查功能。 您可以使用以下函数检查值是否在特定单位中：
+● ispixel           判断一个值是否是以px为单位的数值
+● ispercentage      判断一个值是否是百分数
+● isem              判断一个值是否是以em为单位的数值
+● isunit            判断一个值是否是指定单位的数值
+*/
+.mixin (@a; @b: red) when (iscolor(@b)){
+color:blue;
+}
+.mixin (@a) {
+  font-size: @a;
+}
+.myclass { .mixin(20px) }
+/*4、LESS Mixin Guards
+您可以使用默认函数将mixin与其他混合匹配进行匹配，并创建 else 或默认 语句。
+*/
+.mixin (@a) when (@a > 22px){color:blue;}
+.mixin (@a) when (@a <= 20px){color:red;}
+.mixin (@a) {  font-size: @a;}
+.myclass { .mixin(20px) }
+
+
+/*=============================Less CSS Guards=============================================
+Guard用于匹配表达式上的简单值或参数个数。 它应用于CSS选择器。 它是用于声明mixin并立即调用它的语法。
+ 要成功地引出 if 类型语句; 将此功能与功能＆结合使用，您可以将多个guards分组。
+============================================================================================*/
+@usedScope: global;
+.mixin() {
+  @usedScope: mixin;
+  .cont when (@usedScope=global) {
+    background-color: red;
+    color: black;
+  }
+  .style when (@usedScope=mixin) {
+    background-color: blue;
+    color: white;
+  }
+  @usedScope: mixin;
+}
+.mixin();
+/*===================================Less 循环============================================
+循环语句允许我们多次执行一个语句或一组语句。 当递归mixin与 Guard表达式和模式匹配组合时，
+可以创建各种迭代/循环结构。
+==========================================================================================*/
+.cont(@count) when (@count > 0) {
+  .cont((@count - 1));
+  width: (25px * @count);
+}
+div {
+  .cont(7);
+}
+
+/*====================================Less 合并================================================
+它是LESS的一个特性，它允许使用单个属性从多个属性中为逗号或空格分隔列表添加值。 它可以用于背景和变换属性。
+===============================================================================================*/
+/*1、LESS 合并，用逗号（Comma）分隔：
+    它添加属性值到最后。
+*/
+.myfunc() {
+  box-shadow+: 5px 5px 5px grey;
+}
+.class {
+  .myfunc();
+  box-shadow+: 0 0 5px #f78181;
+}
+/*2、LESS 合并，用空格（Space）分隔*/
+.mixin21() {
+  transform+_: scale(1);
+}
+.class {
+  .mixin21();
+  transform+_: rotate(2deg);
+}
+/*3、LESS 多个 & 组合使用
+通过使用＆运算符，可以重复引用父选择器，而不使用其名称。 在选择器＆中可以多次使用。
+*/
+.select {
+  & + & {    color: #A9F5F2;  }
+  & &   {    color: #D0FA58;  }
+  &&    {    color: #81BEF7;  }
+  &, &_class1 {    color: #A4A4A4;  }
+}
+/*4、LESS 更改选择器顺序
+  在选择器排序更改时，将选择器预留到继承（父）选择器很有用。 这是通过在选择器之后放置＆。 
+  例如，当您使用Modernizer时，您可能希望根据支持的功能指定不同的规则。
+*/
+.header {
+  .menu {
+    border-radius: 5px;
+    border: 1px solid red;
+    & {
+      padding-left: 200px;
+    }
+  }
+}
+/*5、Less 组合爆炸
+  ＆可以产生列表中的选择器的所有可能的排列，用逗号分隔。
+*/
+p, div {
+  color : red;
+  font-family:Lucida Console;
+  & + & {
+    color : green;
+    background-color: yellow;
+    font-family: "Comic Sans MS";
+  }
+}
+/*=======================Less 其他函数==================================
+S.N.                          函数及描述
+1   color                 它是一个代表颜色的字符串。
+2   image-size            它用于从文件检查图像的维度。
+3   image-width           它检查文件中图像的宽度。
+4   image-height          它检查图像从文件的高度。
+5   convert               数字从一个单位转换为另一个单位。
+6   data-uri              数据uri是统一资源标识符(URI)模式，其在网页中嵌入资源。
+7   default               默认函数仅在保护条件内可用且与任何其他混合程序不匹配时才返回true。
+8   unit                  默认函数仅在保护条件内可用且与任何其他mixin不匹配时才返回true
+9   get-unit              get-unit函数返回其中存在参数的单位，其数字和单位。
+10  svg-gradient          svg-gradient是一种颜色到另一种颜色的转换。 它可以向同一元素添加许多颜色。
+==============================================================================================*/
+/*1、它是一个代表颜色的字符串。 颜色可以设置为元素的背景或前景。 颜色值用于指定颜色。*/
+.styleOth{
+  color:(#fe2700);
+}
+/*2、image-size它用于从文件检查图像的维度。 它检查图像的宽度和高度。*/
+body{
+   background-image:url("./img/fscl.jpg");
+   image-size:image-size("./img/fscl.jpg");
+}
+/*3、image-width它检查文件中图像的宽度。*/
+body{
+   background-image:url("./img/fscl.jpg");
+   width:image-width("./img/fscl.jpg");
+}
+/*4、image-height它检查文件中图像的高度。*/
+body{
+  background-image:url("./img/fscl.jpg");
+  height:image-height("./img/fscl.jpg")
+}
+/*5、convert函数：
+  数字从一个单位转换为另一个单位。 它包括两个论点; 第一个参数遍编号以及单位和第二个参数包含单位。 
+  当本机兼容时，转换该数字。 如果第一个参数不变，则单位不兼容。
+*/
+body{
+  meter:convert(10cm, mm);
+  time:convert(3s, "ms");
+  no-unit:convert(5, mm);
+}
+/*6、data-uri函数
+  data-uri是统一资源标识符(URI)模式，其在网页中嵌入资源。 当没有给出MIME类型时，
+  节点使用mime包来控制正确的MIME类型。
+*/
+body{
+   @bg: data-uri('./img/fscl.jpg');
+   background-image:@bg;
+}
+/*default函数
+  default函数仅在Guards条件内可用时返回true，并且与任何其他mixin不匹配，否则返回false。 
+  当default函数在mixin guard条件之外使用时，它解释为常规css。
+*/
+.mixin(1)                   {a: 5}
+.mixin(2)                   {b: 10}
+.mixin(3)                   {c: 15}
+.mixin(@a) when (default()) {d: @a}  //如果@a变量值等于1、2或者3时default()返回false。
+div {  .mixin(1);}
+div {  .mixin(2);}
+div {  .mixin(3);}
+div {  .mixin(12);}
+/*unit函数：
+  unit(dimension, unit)
+  参数：
+  dimension   指定带有或不带尺寸的数字。
+  unit        指定单位
+*/
+.style{
+  font-size:unit(30, px);
+}
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.etong</groupId>
+        <artifactId>etong-parent</artifactId>
+        <version>1.1.0</version>
+        <relativePath>parent/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>etong-common</artifactId>
+    <packaging>pom</packaging>
+
+    <name>etong-common +</name>
+    <url>http://maven.etong.com</url>
+
+    <modules>
+        <module>etong-framework</module>
+        <module>etong-test</module>
+        <module>parent</module>
+    </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>com.etong</id>
+            <url>http://192.168.0.249:8081/nexus/content/repositories/com.etong</url>
+        </repository>
+        <snapshotRepository>
+            <id>com.etong</id>
+            <url>http://192.168.0.249:8081/nexus/content/repositories/com.etong</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>

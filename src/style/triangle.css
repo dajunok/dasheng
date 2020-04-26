@@ -1,0 +1,80 @@
+/*=====================CSS绘制三角形—border法===========================
+    使用CSS盒模型中的border（边框）实现常用的三角形符号，替代相应的三角图标
+*/
+.diamond {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border: 40px solid;
+  border-color: orange blue red green;
+}
+.triangle-common-left {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 40px 40px 0px;
+  border-color: transparent blue transparent transparent;
+}
+.triangle-common-right {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 0px 40px 40px;
+  border-color: transparent transparent transparent green;
+}
+.triangle-common-upleft {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 0px 40px 40px;
+  border-color: orange transparent transparent transparent;
+}
+.triangle-common-upright {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 40px 40px 0px;
+  border-color: orange transparent transparent transparent;
+}
+.triangle-common-downleft {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 0px 40px 40px;
+  border-color: transparent transparent red transparent;
+}
+.triangle-common-downright {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 40px 40px 0px;
+  border-color: transparent transparent red transparent;
+}
+.triangle-common-leftup {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 40px 0px 40px;
+  border-color: transparent transparent transparent green;
+}
+.triangle-common-leftdown {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0px 40px 40px 40px;
+  border-color: transparent transparent transparent green;
+}
+.triangle-common-rightup {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 40px 40px 0px 40px;
+  border-color: transparent blue transparent transparent;
+}
+.triangle-common-rightdown {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0px 40px 40px 40px;
+  border-color: transparent blue transparent transparent;
+}

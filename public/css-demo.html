@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 解决360浏览器、IE浏览器兼容问题 -->
+    <meta name="renderer" content="webkit">  <!-- 解决360浏览器、IE浏览器兼容问题 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"> <!-- 解决360浏览器、IE浏览器兼容问题 -->
+    <link rel="icon" href="\web\img\monkey.ico"><!-- HtmlWebpackPlugin插件支持使用ejs模板引擎语法<%= BASE_URL %> -->
+    <title>CSS-Demo</title>
+    <style type="text/css">
+      /* 清除内外边距 */
+      body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+      dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+      pre, /* text formatting elements 文本格式元素 */
+      fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+      th, td { /* table elements 表格元素 */
+          margin: 0;
+          padding: 0;
+      }
+      button{
+          border: none;
+          padding: 0;
+          margin: 0;
+          outline-style: none;
+      }
+      ul li{list-style:none;}    /*去掉列表前面的项目符号*/
+      .header{
+        position: static;
+        height: 40px;
+        background-color: red;
+      }
+      .main{
+        position: static;
+        height: 90%;
+        width: 40%;
+        background-color: green;
+      }
+      li{
+        position: static;
+        height: 100%;
+        width: 80px;
+        margin: 0 0 0 10px;
+        background-color: blue;
+        float: left;
+      }
+      body {
+          background-color:lightgreen;
+      }
+
+      @media screen and (max-width: 1200px) {
+          body {
+              background-color:lightblue;
+          }
+      }
+        
+    </style>
+  </head>
+  <body>      
+    <div class="header">
+      <ul class="main">
+        <li></li>
+        <li>
+          <div class="dropdown">
+            <button class="dropdown-toggle">
+              主题
+              <span class="caret"></span>              
+            </button>
+            <ul class="dropdown-menu">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+        </li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="body"></div>
+    <div class="footer"></div>    
+  </body>
+</html>
