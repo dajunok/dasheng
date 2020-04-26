@@ -24,7 +24,7 @@ export default{
     computed:{},
     methods:{
         login: function () {
-            this.$axios.get('http://vue-warehouse.com:8080/web/LoginServlet', {
+            this.$axios.get('/web/LoginServlet', {
                 params: {
                     user: this.user,
                     password: this.password
